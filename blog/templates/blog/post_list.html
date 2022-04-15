@@ -5,15 +5,15 @@
     </head>
     <body>
         <header>
-            <h1 style="text-align: center;"><a href="/">Darshu's Blog</a></h1>
+            <h1><a href="/">Django Girls Blog</a></h1>
         </header>
+        
         {% for post in posts %}
             <article>
-                <h2>Title: {{post.title}}</h2>
-                <time><b>Published on: </b>{{post.published_date}}</time>
-                <h4>Author: {{post.author}}</h4>
-                <p>{{post.text|linebreaksbr}}</p>
-            </article><hr>
+                <time>published: {{ post.published_date }}</time>
+                <h2><a href="">{{ post.title }}</a></h2>
+                <p>{{ post.text|linebreaksbr }}</p>
+            </article>
         {% endfor %}
     </body>
 </html>
