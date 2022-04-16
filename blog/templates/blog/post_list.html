@@ -1,22 +1,14 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Darshu's blog</title>
-    </head>
-    <body>
-        <header>
-            <h1 style="text-align: center;"><a href="/">Darshu's Blog</a></h1>
-        </header>
-        {% for post in posts %}
-            <article>
-                <h2>Title: {{post.title}}</h2>
-                <time><b>Published on: </b>{{post.published_date}}</time>
-                <h4>Author: {{post.author}}</h4>
-                <p>{{post.text|linebreaksbr}}</p>
-            </article><hr>
-        {% endfor %}
-    </body>
-</html>
+{% extends 'blog/base.html' %}
+{% block content %}
+    {% for post in posts %}
+        <article class="post home-post">
+            <time class="date">
+                <h5 class="home-side-heading side-heading">Published on: </h5>
+                {{ post.published_date }}
+            </time><br>
+            <h2><a href="{% url 'post_details' pk=post.pk %}">{{ post.title }}</a></h2>
+            <p>{{ post.text|linebreaksbr }}</p>
+        </article>
+        <hr>
+    {% endfor %}
+{% endblock %}

@@ -1,0 +1,29 @@
+.post {
+    padding: 20px;
+    width: 100%;
+    height: auto;
+    background-color: lavender;
+    border: 2px #f3f3f3;
+    border-style: outset;
+}
+
+.details-post:hover {
+    background-color: lavender;
+}
+
+.home-post {
+    background-color: initial;
+    border: initial;
+    border: initial;
+}
+
+
+.post .side-heading {
+    color: rgb(47, 140, 206);
+    margin: 10px 0;
+}
+
+.post .side-heading span {
+    color: initial;
+    font-weight: 400;
+}
