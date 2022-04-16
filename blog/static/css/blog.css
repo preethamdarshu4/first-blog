@@ -41,10 +41,14 @@ h4 {
 .top-menu:visited {
     color: #ffffff;
     float: right;
-    font-size: 26pt;
-    margin-right: 20px;
+    font-size: 25px;
+    margin: 12px 20px 0px;
+    text-decoration: none;
 }
 
+/* .top-menu {
+    font-size: medium;
+} */
 .post {
     padding: 10px;
     width: 100%;
