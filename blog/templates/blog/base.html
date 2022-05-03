@@ -18,6 +18,9 @@
                     <a href="{% url 'new_post' %}" class="top-menu btn btn-secondary">
                         {% include './icons/file-earmark-plus.svg' %}
                     </a>
+                    <a href="{% url 'draft_post_list' %}" class="top-menu btn btn-secondary">
+                        {% include './icons/draft-svgrepo-com.svg' %}
+                    </a>
                 {% endif %}
                 <h1><a href="/">Django Blog</a></h1>
             </div>
