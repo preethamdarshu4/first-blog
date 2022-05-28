@@ -19,7 +19,7 @@
                 <a href="{% url 'delete_post' pk=post.pk %}" class="btn btn-outline-primary">
                     {% include './icons/trash3.svg' %}
                 </a>
-            {% else %}
+            {% elif user.is_authenticated and post.created_date %}
                 <a href="{% url 'drafts_edit_post' pk=post.pk %}" class="btn btn-outline-primary">
                     {% include './icons/pencil-square.svg' %}
                 </a>
