@@ -1,14 +1,25 @@
 {% extends 'blog/base.html' %}
+
+{% block title %}
+    {{type2}} - {{block.super}}
+{% endblock %}
+
+{%block breadcrumb%}
+    <li class="breadcrumb-item"><a class="text-decoration-none" href="/">{{type1}}</a></li>
+    <li class="breadcrumb-item active" aria-current="page">{{type2}}</li>
+{%endblock%}
+
 {% block content %}
-    <h2>{{type}}</h2><hr>
     {% for post in posts %}
-        <article class="post home-post">
-            <time class="date">
-                <h5 class="home-side-heading side-heading">Created on: </h5>
-                {{ post.created_date }}
-            </time><br>
-            <h2><a href="{% url 'post_details' pk=post.pk %}">{{ post.title }}</a></h2>
-            <p>{{ post.text|linebreaksbr }}</p>
+        <article class="container post">
+            <a href="{% url 'draft_post_details' pk=post.pk %}">
+                <time class="date">
+                    <h5 class="side-heading">Created on: </h5>
+                    {{ post.created_date }}
+                </time><br>
+                <h2>{{ post.title }}</h2>
+                <p>{{ post.text|linebreaksbr }}</p>
+            </a>
         </article><hr>
     {% endfor %}
 {% endblock %}

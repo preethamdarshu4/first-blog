@@ -7,7 +7,7 @@ from .models import Post
 # Create your tests here.
 
 class HomeTest(TestCase):
-    def setUp(self) -> None:
+    def setUp(self):
         user = User.objects.create(username='test user', email = 'test@mail.com', password='xyz')
         self.post = Post.objects.create(author=user, title='Test', text='Something.', created_date=timezone.now())
         url = reverse('post_list')

@@ -1,0 +1,35 @@
+.post {
+    padding: 0 20px 20px;
+    width: 100%;
+    height: auto;
+}
+
+.details-post, .post:hover {
+    background-color: #e9ecef;
+}
+
+.post a,
+.post a:visited {
+    color: #000000;
+    text-decoration: unset;
+}
+
+.post h2 {
+    color: #0d6efd;
+}
+
+.post  .date,
+.post  .actions {
+    float: right;
+}
+
+
+.post .side-heading {
+    color: rgb(47, 140, 206);
+    margin: 10px 0;
+}
+
+.post .side-heading span {
+    color: initial;
+    font-weight: 400;
+}

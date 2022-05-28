@@ -1,13 +1,30 @@
 {% extends 'blog/base.html' %}
+
+{% block title %}
+    {{post.title}} - {{block.super}}
+{% endblock %}
+
+{%block breadcrumb%}
+    <li class="breadcrumb-item"><a class="text-decoration-none" href="/">{{type1}}</a></li>
+    <li class="breadcrumb-item active" aria-current="page">{{type2}}</li>
+{%endblock%}
+
 {% block content %}
-    <article class="details-post post">
+    <article class="container post details-post p-4">
         <aside class="actions">
-            {% if user.is_authenticated %}
-                <a href="{% url 'edit_post' pk=post.pk %}" class="btn btn-secondary">
-                    {% include './icons/pencil-fill.svg' %}
+            {% if user.is_authenticated and post.published_date %}
+                <a href="{% url 'edit_post' pk=post.pk %}" class="btn btn-outline-primary">
+                    {% include './icons/pencil-square.svg' %}
                 </a>
-                <a href="{% url 'delete_post' pk=post.pk %}" class="btn btn-secondary">
-                    {% include './icons/delete-alt-svgrepo-com.svg' %}
+                <a href="{% url 'delete_post' pk=post.pk %}" class="btn btn-outline-primary">
+                    {% include './icons/trash3.svg' %}
+                </a>
+            {% else %}
+                <a href="{% url 'drafts_edit_post' pk=post.pk %}" class="btn btn-outline-primary">
+                    {% include './icons/pencil-square.svg' %}
+                </a>
+                <a href="{% url 'drafts_delete_post' pk=post.pk %}" class="btn btn-outline-primary">
+                    {% include './icons/trash3.svg' %}
                 </a>
             {% endif %}
         </aside>
@@ -15,10 +32,10 @@
             <time class="date">
                 <h5 class="side-heading">Published on: </h5>{{post.published_date}}
             </time>
-            {% else %}
-                <a class="actions btn btn-secondary" href="{% url 'publish_post' pk=post.pk %}" style="margin-right: 20px">
-                    Publish
-                </a>
+        {% else %}
+            <a class="actions btn btn-outline-primary" href="{% url 'publish_post' pk=post.pk %}" style="margin-right: 20px">
+                {% include './icons/file-earmark-post.svg' %} Publish
+            </a>
         {% endif %}
         <h2>{{post.title}}</h2>
         <h5 class="side-heading">Author: <span>{{post.author}}</span></h5>
