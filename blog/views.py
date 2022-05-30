@@ -1,7 +1,7 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.utils import timezone
 from .models import Post
-from .forms import PostForm
+from .forms import PostForm, SignupForm
 from django.contrib.auth.decorators import login_required
 # Create your views here.
 
@@ -13,6 +13,16 @@ def post_list(request):
 def post_details(request, pk):
     post = get_object_or_404(Post, pk=pk)
     return render(request, 'blog/post_details.html', {'post': post, 'type1': 'Published Posts', 'type2': 'Post: ' + str(pk)})
+
+def signup(request):
+    if request.method == "POST":
+        form = SignupForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('blog/login.html')
+    else:
+        form = SignupForm()
+    return render(request, 'registration/signup.html', {'form': form, 'type': 'Signup'})
 
 @login_required
 def new_post(request):

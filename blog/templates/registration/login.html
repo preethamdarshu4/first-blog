@@ -1,0 +1,41 @@
+{% extends 'blog/base.html' %}
+
+{% load static %}
+
+{% block stylesheet %}
+    <link rel="stylesheet" href="{% static 'blog/css/auth.css' %}">
+{% endblock %}
+
+{% block title %}
+    Login - {{block.super}}
+{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <h1 class="text-center logo my-4">
+            <a href="{% url 'post_list' %}">Darshu's Blog</a>
+        </h1>
+        <div class="row justify-content-center">
+            <div class="col-lg-5 col-md-8 col-sm-10">
+                <div class="card">
+                    <div class="card-body">
+                        <h3 class="card-title mb-3">Login</h3>
+                        <form method="POST" novalidate>
+                            {% csrf_token %}
+                            {% include '../blog/includes/base_form.html' %}
+                            <div class="d-grid">
+                                <button type="submit" class="btn btn-primary px-3">Login</button>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="card-footer text-muted text-center">
+                        New to Django Boards? <a href="{% url 'signup' %}">Sign up</a>
+                    </div>
+                </div>
+                <div class="text-center py-2">
+                    <a href="#" class="text-muted fw-bold">Forgot your password?</a>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
