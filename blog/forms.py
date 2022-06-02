@@ -17,3 +17,12 @@ class SignupForm(UserCreationForm):
         model = User
         fields = ('firstname', 'lastname', 'username', 'email', 'password1', 'password2')
 
+    def clean_username(self):
+        uname = self.cleaned_data.get('username')
+        try:
+            usr = User.objects.get(username=uname)
+        except:
+            usr = False
+        if usr:
+            raise forms.ValidationError('Username already taken.', code='username-invalid')
+        return uname
