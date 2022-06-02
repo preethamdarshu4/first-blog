@@ -19,10 +19,10 @@ def signup(request):
         form = SignupForm(request.POST)
         if form.is_valid():
             form.save()
-            return redirect('blog/login.html')
+            return redirect('login')
     else:
         form = SignupForm()
-    return render(request, 'registration/signup.html', {'form': form, 'type': 'Signup'})
+    return render(request, 'blog/registration/signup.html', {'form': form, 'type': 'Signup'})
 
 @login_required
 def new_post(request):
