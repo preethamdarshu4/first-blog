@@ -3,6 +3,7 @@ from django.utils import timezone
 from .models import Post
 from .forms import PostForm, SignupForm
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import User
 # Create your views here.
 
 def post_list(request):
@@ -12,7 +13,10 @@ def post_list(request):
 
 def post_details(request, pk):
     post = get_object_or_404(Post, pk=pk)
-    return render(request, 'blog/post_details.html', {'post': post, 'type1': 'Published Posts', 'type2': 'Post: ' + str(pk)})
+    if post.published_date:
+        return render(request, 'blog/post_details.html', {'post': post, 'type1': 'Published Posts', 'type2': 'Post: ' + str(pk)})
+    elif post.created_date:
+        return render(request, 'blog/post_details.html', {'post': post, 'type1': 'Drafts', 'type2': 'Post: ' + str(pk)})
 
 def signup(request):
     if request.method == "POST":
@@ -68,3 +72,8 @@ def delete_post(request, pk):
     post = get_object_or_404(Post, pk=pk)
     post.delete()
     return redirect('post_list')
+
+@login_required(login_url='login')
+def user_account(request):
+    user = get_object_or_404(User, username=request.user)
+    return render(request, 'blog/user_account.html', {'user': user, 'type1': 'My account'})

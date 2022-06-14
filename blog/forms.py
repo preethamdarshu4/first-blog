@@ -10,12 +10,12 @@ class PostForm(forms.ModelForm):
         fields = ('title', 'text', )
 
 class SignupForm(UserCreationForm):
-    firstname = forms.CharField(max_length=50, widget=forms.TextInput())
-    lastname = forms.CharField(max_length=50, widget=forms.TextInput())
+    first_name = forms.CharField(max_length=50, widget=forms.TextInput())
+    last_name = forms.CharField(max_length=50, widget=forms.TextInput())
     email = forms.CharField(max_length=254, required=True, widget=forms.EmailInput())
     class Meta:
         model = User
-        fields = ('firstname', 'lastname', 'username', 'email', 'password1', 'password2')
+        fields = ('first_name', 'last_name', 'username', 'email', 'password1', 'password2')
 
     def clean_username(self):
         uname = self.cleaned_data.get('username')

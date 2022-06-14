@@ -16,6 +16,9 @@ urlpatterns = [
     path('drafts/post/<int:pk>/delete/', views.delete_post, name='drafts_delete_post'),
     path('auth/users/signup/', views.signup, name="signup"),
     path('auth/users/login/', auth_views.LoginView.as_view(template_name='blog/registration/login.html'), name='login'),
-    path('auth/users/logout/', auth_views.LogoutView.as_view(), name='logout'),
+    path('auth/user/logout/', auth_views.LogoutView.as_view(), name='logout'),
+    path('auth/user/settings/password_change/', auth_views.PasswordChangeView.as_view(template_name='blog/password_change.html'), name='password_change'),
+    path('auth/user/settings/password_change/done/', auth_views.PasswordChangeDoneView.as_view(template_name='blog/password_change_done.html'), name='password_change_done'),
+    path('user/account/', views.user_account, name='user_account')
 ]
 
