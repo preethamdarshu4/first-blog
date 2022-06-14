@@ -24,7 +24,7 @@ def signup(request):
         form = SignupForm()
     return render(request, 'blog/registration/signup.html', {'form': form, 'type': 'Signup'})
 
-@login_required
+@login_required(login_url='login')
 def new_post(request):
     if request.method == 'POST':
         form = PostForm(request.POST)
@@ -38,7 +38,7 @@ def new_post(request):
     return render(request, 'blog/new_post.html', {'form':form, 'type1': 'Posts','type2':'New post'})
 
 
-@login_required
+@login_required(login_url='login')
 def edit_post(request, pk):
     post = get_object_or_404(Post, pk=pk)
     if request.method == 'POST':
@@ -52,18 +52,18 @@ def edit_post(request, pk):
         form = PostForm(instance=post)
     return render(request, 'blog/new_post.html', {'form': form, 'type':'Edit post'})
 
-@login_required
+@login_required(login_url='login')
 def draft_post_list(request):
     posts = Post.objects.filter(published_date__isnull=True).order_by('created_date')
     return render(request, 'blog/draft_post_list.html', {'posts': posts, 'type1': 'Posts', 'type2':'Drafts '})
 
-@login_required
+@login_required(login_url='login')
 def publish_post(request, pk):
     post = get_object_or_404(Post, pk=pk)
     post.publish()
     return redirect('post_details', pk=pk)
 
-@login_required
+@login_required(login_url='login')
 def delete_post(request, pk):
     post = get_object_or_404(Post, pk=pk)
     post.delete()

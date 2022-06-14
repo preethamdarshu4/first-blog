@@ -22,6 +22,7 @@
                         <h3 class="card-title mb-3">Login</h3>
                         <form method="POST" novalidate>
                             {% csrf_token %}
+                            <input type="hidden" name="next" value="{{next}}">
                             {% include '../includes/base_form.html' %}
                             <div class="d-grid">
                                 <button type="submit" class="btn btn-primary px-3">Login</button>
