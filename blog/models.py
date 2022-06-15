@@ -1,4 +1,4 @@
-from tkinter import CASCADE
+
 from django.db import models as mdl
 from django.conf import settings
 from django.utils import timezone
