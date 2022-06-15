@@ -1,6 +1,6 @@
 
 from django import forms
-from .models import Post
+from .models import Post, Comment
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 
@@ -26,3 +26,12 @@ class SignupForm(UserCreationForm):
         if usr:
             raise forms.ValidationError('Username already taken.', code='username-invalid')
         return uname
+
+class CommentForm(forms.ModelForm):
+    class Meta:
+        model = Comment
+        fields = ('text', )
+        widgets = {
+            'text': forms.Textarea(attrs={'rows': 2, 'placeholder': 'Add a comment'}),
+        }
+

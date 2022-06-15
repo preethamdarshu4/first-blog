@@ -13,7 +13,11 @@
 
 {% for field in form %}
     <div class="form-group mb-3">
-        <h5>{{field.label_tag}}</h5>
+        {% if type1 == 'Published Posts' %}
+            <label for="{{ form.text.id_for_label }}" class="fw-semibold text-primary mb-1">Comment as {{ request.user.username }}</label>
+        {% else %}
+            <h5>{{field.label_tag}}</h5>
+        {% endif %}
 
         {% if form.is_bound %}
             {% if field.errors %}

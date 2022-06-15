@@ -1,3 +1,4 @@
+from tkinter import CASCADE
 from django.db import models as mdl
 from django.conf import settings
 from django.utils import timezone
@@ -18,3 +19,16 @@ class Post(mdl.Model):
     def __str__(self):
         return self.title
 
+class Comment(mdl.Model):
+    post_id = mdl.ForeignKey('blog.Post', on_delete=mdl.CASCADE, related_name='comments')
+    author = mdl.ForeignKey(settings.AUTH_USER_MODEL, on_delete=mdl.CASCADE)
+    text = mdl.TextField()
+    created_date = mdl.DateTimeField(default=timezone.now)
+
+
+    def approve_comment(self):
+        self.approved_comment = True
+        self.save()
+
+    def __str__(self):
+        return 'Comment by: ' + self.author.username + ' on post ' + str(self.post_id.pk)
