@@ -40,6 +40,7 @@
                         <div class="col">
                             {% include './base_form.html' %}
                             <input type="hidden" name="reply_id" value="{{ comment.pk }}">
+                            <input type="hidden" name="replying_to" value="{{ comment.pk }}">
                             <button type="submit" class="btn btn-primary">Post</button>
                         </div>
                     </form>
