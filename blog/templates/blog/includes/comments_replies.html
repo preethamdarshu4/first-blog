@@ -31,9 +31,9 @@
             </div>
             <div class="text-secondary mt-2">
                 <time>{{ comment.created_date|naturaltime }}</time>
-                <a class="text-decoration-none text-secondary ms-4" href="#replyTo-{{ comment.author }}" data-bs-toggle="collapse">Reply</a>
+                <a class="text-decoration-none text-secondary ms-4" href="#replyTo-{{ comment.pk }}" data-bs-toggle="collapse">Reply</a>
             </div>
-            <div id="replyTo-{{ comment.author }}" class="collapse w-50 my-3">
+            <div id="replyTo-{{ comment.pk }}" class="collapse w-50 my-3">
                 {% if user.is_authenticated %}
                     <form method="POST" novalidate>
                         {% csrf_token %}
