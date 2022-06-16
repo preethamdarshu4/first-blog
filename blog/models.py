@@ -22,13 +22,14 @@ class Post(mdl.Model):
 class Comment(mdl.Model):
     post_id = mdl.ForeignKey('blog.Post', on_delete=mdl.CASCADE, related_name='comments')
     author = mdl.ForeignKey(settings.AUTH_USER_MODEL, on_delete=mdl.CASCADE)
+    reply = mdl.ForeignKey('self', on_delete=mdl.CASCADE, blank=True, null=True, related_name='replies')
     text = mdl.TextField()
     created_date = mdl.DateTimeField(default=timezone.now)
+    replying_to = mdl.CharField(max_length=100, blank=True, null=True)
 
-
-    def approve_comment(self):
-        self.approved_comment = True
-        self.save()
+    class Meta:
+        ordering = ('created_date',)
 
     def __str__(self):
-        return 'Comment by: ' + self.author.username + ' on post ' + str(self.post_id.pk)
+        format_option = str('commment num {}'.format(self.reply.pk)) if self.reply else str('post {}'.format(self.post_id.pk))
+        return '(Num {}) Comment by {} on {}'.format(self.pk, self.author.username, format_option)

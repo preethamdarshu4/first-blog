@@ -1,5 +1,7 @@
 {% extends 'blog/base.html' %}
 
+{% load humanize %}
+
 {% block title %}
     {{post.title}} - {{block.super}}
 {% endblock %}
@@ -49,7 +51,7 @@
         </aside>
         {% if post.published_date %}
             <time class="date">
-                <h5 class="side-heading">Published on: </h5>{{post.published_date}}
+                <h5 class="side-heading">Published on: </h5>{{ post.published_date|naturaltime }}
             </time>
         {% else %}
             <a class="actions btn btn-outline-primary" href="{% url 'publish_post' pk=post.pk %}" style="margin-right: 20px">
@@ -61,36 +63,8 @@
         <p>{{ post.text|linebreaksbr }}</p>
     </article>
     {% if type1 == 'Published Posts' %}
-        <section class="container my-4">
-            <h4>{{ post.comments.count }} Comments </h4>
-            <div class="w-50 my-3">
-                <form method="POST" novalidate>
-                    {% csrf_token %}
-                    <div class="col">
-                        {% include './includes/base_form.html' %}
-                        <button type="submit" class="btn btn-primary">Post</button>
-                    </div>
-                </form>
-            </div>
-            {% if post.comments %}
-                {% for comment in post.comments.all %}
-                    <div class="container row border p-2">
-                        <div>
-                            <span class="pe-2 text-primary">{{comment.author}}
-                                {% if comment.author == post.author %}
-                                    <span class="badge bg-secondary">Author</span>
-                                {% endif %}
-                            </span>
-                            <time class="border-start border-2 border-secondary ps-2" >{{ comment.created_date }}</time>
-                        </div>
-                        <p class="m-2">{{ comment.text|linebreaksbr }}</p>
-                        <a class="text-decoration-none" href="#">Reply</a>
-                    </div>
-                {% endfor %}
-            {% else %}
-                <p> No comments yet.</p>
-            {% endif %}
+        <section class="container my-4 pb-4">
+            {% include './includes/comments_replies.html' %}
         </section>
     {% endif %}
-
 {% endblock %}

@@ -1,0 +1,90 @@
+
+{% load humanize %}
+
+<h4>{{ post.comments.count }} Comments </h4>
+
+{% if user.is_authenticated %}
+    <div class="w-75 my-3">
+        <form method="POST" novalidate>
+            {% csrf_token %}
+            <div class="col">
+                <input type="hidden" name="next" value="{{next}}">
+                {% include './base_form.html' %}
+                <button type="submit" class="btn btn-primary">Post</button>
+            </div>
+        </form>
+    </div>
+{% else %}
+    <p class="alert alert-info"><a href="{% url 'login' %}{{next}}" class="text-decoration-none">Login</a> or <a href="{% url 'signup' %}{{next}}" class="text-decoration-none">Signup</a> to comment.</p>
+{% endif %}
+
+{% if comments %}
+    {% for comment in comments %}
+        <div class="container border-start border-secondary col mb-2">
+            <div>
+                <span class="pe-2 fw-semibold">{{comment.author}}
+                    {% if comment.author == post.author %}
+                        <span class="badge bg-secondary">Author</span>
+                    {% endif %}
+                </span>
+                <span class="border-start border-2 border-secondary ps-2">{{ comment.text|linebreaksbr }}</span>
+            </div>
+            <div class="text-secondary mt-2">
+                <time>{{ comment.created_date|naturaltime }}</time>
+                <a class="text-decoration-none text-secondary ms-4" href="#replyTo-{{ comment.author }}" data-bs-toggle="collapse">Reply</a>
+            </div>
+            <div id="replyTo-{{ comment.author }}" class="collapse w-50 my-3">
+                {% if user.is_authenticated %}
+                    <form method="POST" novalidate>
+                        {% csrf_token %}
+                        <div class="col">
+                            {% include './base_form.html' %}
+                            <input type="hidden" name="reply_id" value="{{ comment.pk }}">
+                            <button type="submit" class="btn btn-primary">Post</button>
+                        </div>
+                    </form>
+                {% else %}
+                    <p class="alert alert-info"><a href="{% url 'login' %}{{next}}" class="text-decoration-none">Login</a> or <a href="{% url 'signup' %}{{next}}" class="text-decoration-none">Signup</a> to reply.</p>
+                {% endif %}
+            </div>
+        </div>
+
+        {% for reply in comment.replies.all %}
+            <div class="container col border-start border-secondary ms-2 pb-2">
+                <div>
+                    <span class="pe-2 fw-semibold">{{reply.author}}
+                        {% if reply.author == post.author %}
+                            <span class="badge bg-secondary">Author</span>
+                        {% endif %}
+                    </span>
+                    <span class="border-start border-2 border-secondary ps-2">
+                        <span class="text-primary">@{{ reply.replying_to }}</span>
+                        {{ reply.text|linebreaksbr }}
+                    </span>
+                </div>
+                <div class="text-secondary">
+                    <time>{{ reply.created_date|naturaltime }}</time>
+                    <a class="text-decoration-none text-secondary ms-4" href="#replyTo-{{ reply.pk }}" data-bs-toggle="collapse">Reply</a>
+                </div>
+                <div id="replyTo-{{ reply.pk }}" class="collapse w-50 my-3">
+                    {% if user.is_authenticated %}
+                        <form method="POST" novalidate>
+                            {% csrf_token %}
+                            <div class="col">
+                                {% include './base_form.html' %}
+                                <input type="hidden" name="reply_id" value="{{ comment.pk }}">
+                                <input type="hidden" name="replying_to" value="{{ reply.pk }}">
+                                <button type="submit" class="btn btn-primary">Post</button>
+                            </div>
+                        </form>
+                    {% else %}
+                        <p class="alert alert-info"><a href="{% url 'login' %}{{next}}" class="text-decoration-none">Login</a> or <a href="{% url 'signup' %}{{next}}" class="text-decoration-none">Signup</a> to reply.</p>
+                    {% endif %}
+                </div>
+            </div>
+        {% endfor %}
+    {% endfor %}
+{% else %}
+    <p> No comments yet.</p>
+{% endif %}
+

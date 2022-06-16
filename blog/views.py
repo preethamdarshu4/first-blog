@@ -1,3 +1,5 @@
+
+import re
 from django.shortcuts import render, get_object_or_404, redirect
 from django.utils import timezone
 from .models import Post, Comment
@@ -14,26 +16,53 @@ def post_list(request):
 def post_details(request, pk):
     post = get_object_or_404(Post, pk=pk)
     if post.published_date and post.created_date:
+        comments = post.comments.filter(reply__isnull=True)
         if request.method == 'POST':
             form = CommentForm(request.POST)
             if form.is_valid():
-                comment = form.save(commit=False)
-                comment.post_id = post
-                comment.author = request.user
-                comment.save()
+                parent_obj = None
+                current_obj = None
+                try:
+                    reply_id = int(request.POST.get('reply_id'))
+                    replying_to = int(request.POST.get('replying_to'))
+                except:
+                    reply_id = None
+                    replying_to = None
+                if reply_id and replying_to:
+                    parent_obj = Comment.objects.get(pk=reply_id)
+                    current_obj = Comment.objects.get(pk=replying_to)
+                    if parent_obj:
+                        reply = form.save(commit=False)
+                        reply.reply = parent_obj
+                        reply.author = request.user
+                        reply.post_id = post
+                        reply.replying_to = current_obj.author
+                        reply.save()
+                else:
+                    comment = form.save(commit=False)
+                    comment.post_id = post
+                    comment.author = request.user
+                    comment.save()
                 return redirect('post_details', pk=post.pk)
         else:
             form = CommentForm()
-        return render(request, 'blog/post_details.html', {'post': post, 'type1': 'Published Posts', 'type2': 'Post: ' + str(pk), 'form': form})
+        
+        return render(request, 'blog/post_details.html', {'post': post, 'type1': 'Published Posts', 'type2': 'Post: ' + str(post.pk), 'form': form, 'next': '?next=/post/{}/'.format(post.pk), 'comments': comments})
     else:
-        return render(request, 'blog/post_details.html', {'post': post, 'type1': 'Drafts', 'type2': 'Post: ' + str(pk)})
+        return render(request, 'blog/post_details.html', {'post': post, 'type1': 'Drafts', 'type2': 'Post: ' + str(post.pk)})
 
 def signup(request):
     if request.method == "POST":
         form = SignupForm(request.POST)
         if form.is_valid():
             form.save()
-            return redirect('login')
+            try:
+                next = str(re.findall('signup/(.+)', str(request.get_full_path()))[0])
+                #print('1: '+next)
+                if next:
+                    return redirect('/auth/users/login/{}'.format(next))
+            except:
+                return redirect('login')
     else:
         form = SignupForm()
     return render(request, 'blog/registration/signup.html', {'form': form, 'type': 'Signup'})
